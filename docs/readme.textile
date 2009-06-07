@@ -1,0 +1,25 @@
+h1. Settings plugin
+
+This plugin imports your current config/core.php file into the database, so you can controll them from your backend. 
+
+h2. app/config/core.php
+
+Add these lines to your app/config/core.php file. Everything inside will be imported into the settings database.
+
+Configure::write('SettingsStart', true); 
+// Settings to import
+Configure::write('SettingsEnd', true);
+
+h2. app/app_controller.php
+
+Import settings from database, and overwrite default cofiguration:
+
+function beforeFilter() {
+	parent::beforeFilter(); 
+	
+	App::import("Model", "Settings.Setting");
+	$setting = new Setting;
+	$setting->writeSettings();
+	
+	return true;
+}
