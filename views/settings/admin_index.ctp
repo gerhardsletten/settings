@@ -1,62 +1,38 @@
+<?php echo $html->css('/settings/css/ajax_filter', NULL, array(), false); ?>
+
 <div class="settings index">
 <h2><?php __('Settings');?></h2>
 <div class="actions">
 	<ul>
 		<li><?php echo $html->link(__('Import Configure settings', true), array('action'=>'import')); ?></li>
+		<li><?php echo $html->link(__('Clear cache', true), array('action'=>'clearcache')); ?></li>
 	</ul>
 </div>
-<p>
-<?php
-echo $paginator->counter(array(
-'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
-));
-?></p>
-<table cellpadding="0" cellspacing="0">
-<tr>
-	<th><?php echo $paginator->sort('id');?></th>
-	<th><?php echo $paginator->sort('key');?></th>
-	<th><?php echo $paginator->sort('value');?></th>
-	<th><?php echo $paginator->sort('created');?></th>
-	<th><?php echo $paginator->sort('modified');?></th>
-	<th class="actions"><?php __('Actions');?></th>
-</tr>
-<?php
-$i = 0;
-foreach ($settings as $setting):
-	$class = null;
-	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
-	}
-?>
-	<tr<?php echo $class;?>>
-		<td>
-			<?php echo $setting['Setting']['id']; ?>
-		</td>
-		<td>
-			<?php echo $setting['Setting']['key']; ?>
-		</td>
-		<td>
-			<?php echo $setting['Setting']['value']; ?>
-		</td>
-		<td>
-			<?php echo $setting['Setting']['created']; ?>
-		</td>
-		<td>
-			<?php echo $setting['Setting']['modified']; ?>
-		</td>
-		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $setting['Setting']['id'])); ?>
-			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $setting['Setting']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $setting['Setting']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $setting['Setting']['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-</table>
+<div id="filter_box">
+	<input type="text" name="filter_text" id="filter_text" />
+	<button><?php __('Filter settings')?></button>
 </div>
-<div class="paging">
-	<?php echo $paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>
- | 	<?php echo $paginator->numbers();?>
-	<?php echo $paginator->next(__('next', true).' >>', array(), null, array('class'=>'disabled'));?>
+<script>
+
+jQuery(document).ready(function() {
+	jQuery("#filter_box button").click(function() { 
+		var input = jQuery("#filter_text").val();
+		filter(input);
+	  });
+	
+});
+
+<?php $url = $this->base .'/admin/settings/query/' ?>
+function filter(query) {
+  var url = "<?php echo $url; ?>" + query;
+//alert(url);
+  jQuery("#ajax_update").load(url);
+
+}
+</script>
+<div id="ajax_update">
+	<?php echo $this->element('index_table', array('settings'=>$settings)); ?>
+</div>
 </div>
 <div class="actions">
 	<ul>

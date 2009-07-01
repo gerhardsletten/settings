@@ -87,10 +87,40 @@ class SettingsController extends SettingsAppController {
 		$this->set(compact('success', 'exists', 'error'));
 	}
 	
+	function admin_clearcache() {
+		//debug($configure);
+		if(clearCache()) {
+			$this->Session->setFlash(__('CakePHPs Cache is cleared!', true));
+		} else {
+			$this->Session->setFlash(__('CakePHPs Cache was not cleared!', true));
+		}
+		$this->redirect('/admin/settings/');
+	}
+	
 	function admin_index() {
 		//debug($configure);
 		$this->Setting->recursive = 0;
+		if($this->Session->read('Settings_query')) {
+			$this->_set_query($this->Session->read('Settings_query'));
+		}
+		
 		$this->set('settings', $this->paginate());
+	}
+	function admin_query($query = null) {
+		$this->layout = "ajax";
+		Configure::write ('debug', 0);
+		if($query != null) {
+			 //LIKE  '%test%'
+			$this->_set_query($query);
+			$this->Session->write('Settings_query', $query);
+			$this->set('query', $query);
+		} else {
+			$this->Session->del('Settings_query');
+		}
+		$this->admin_index();
+	}
+	function _set_query($query) {
+		$this->paginate['conditions'] = array("Setting.key LIKE '%" . $query . "%'");
 	}
 
 	function admin_view($id = null) {

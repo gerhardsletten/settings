@@ -1,0 +1,4 @@
+#ajax_update {border: 0px solid red;}
+#filter_box {border: 0px solid red; float: right; margin-bottom: .5em;}
+#filter_box input {height: 20px; padding: 0; width: 250px; line-height: 20px;font-size: 13px;}
+#filter_box button {}
