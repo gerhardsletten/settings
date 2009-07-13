@@ -82,7 +82,7 @@ class SettingsController extends SettingsAppController {
 		}
 		
 		//debug($success);
-		//$this->redirect(array('action'=>'index'));
+		//$this->redirect('/admin/settings/');
 		
 		$this->set(compact('success', 'exists', 'error'));
 	}
@@ -126,7 +126,7 @@ class SettingsController extends SettingsAppController {
 	function admin_view($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid Setting.', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect('/admin/settings/');
 		}
 		$this->set('setting', $this->Setting->read(null, $id));
 	}
@@ -136,7 +136,7 @@ class SettingsController extends SettingsAppController {
 			$this->Setting->create();
 			if ($this->Setting->save($this->data)) {
 				$this->Session->setFlash(__('The Setting has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->redirect('/admin/settings/');
 			} else {
 				$this->Session->setFlash(__('The Setting could not be saved. Please, try again.', true));
 			}
@@ -146,12 +146,12 @@ class SettingsController extends SettingsAppController {
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
 			$this->Session->setFlash(__('Invalid Setting', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect('/admin/settings/');
 		}
 		if (!empty($this->data)) {
 			if ($this->Setting->save($this->data)) {
 				$this->Session->setFlash(__('The Setting has been saved', true));
-				$this->redirect(array('action'=>'index'));
+				$this->redirect('/admin/settings/');
 			} else {
 				$this->Session->setFlash(__('The Setting could not be saved. Please, try again.', true));
 			}
@@ -164,11 +164,11 @@ class SettingsController extends SettingsAppController {
 	function admin_delete($id = null) {
 		if (!$id) {
 			$this->Session->setFlash(__('Invalid id for Setting', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect('/admin/settings/');
 		}
 		if ($this->Setting->del($id)) {
 			$this->Session->setFlash(__('Setting deleted', true));
-			$this->redirect(array('action'=>'index'));
+			$this->redirect('/admin/settings/');
 		}
 	}
 
