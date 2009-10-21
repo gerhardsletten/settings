@@ -2,6 +2,8 @@ h1. Settings plugin
 
 This plugin imports your current config/core.php file into the database, so you can controll them from your backend. 
 
+# Run "cake schema run create -path app/plugins/settings/config/sql/ -name Settings" or "cake schema run update -path app/plugins/settings/config/sql/ -name Settings"
+
 h2. app/config/core.php
 
 Add these lines to your app/config/core.php file. Everything inside will be imported into the settings database.
